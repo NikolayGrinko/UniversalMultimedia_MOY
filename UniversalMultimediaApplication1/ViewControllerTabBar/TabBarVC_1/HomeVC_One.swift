@@ -9,7 +9,11 @@ import UIKit
 import Alamofire
 
 
-class HomeVC_One: UIViewController, UICollectionViewDataSource {
+class HomeVC_One: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    private let tableView = UITableView()
+    private var photos: [UnsplashPhotoAll] = []
+    
     
     private var photoLabel: UILabel = {
         let photoLab = UILabel()
@@ -19,28 +23,6 @@ class HomeVC_One: UIViewController, UICollectionViewDataSource {
         photoLab.frame = CGRect(x: 135, y: 55, width: 150, height: 35)
         return photoLab
     }()
-    
-    private let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = 15
-        layout.minimumLineSpacing = 15
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = #colorLiteral(red: 0.5458797216, green: 0.1337981224, blue: 0.4389412999, alpha: 1)
-        cv.register(CellsMemTB_1.self, forCellWithReuseIdentifier: CellsMemTB_1.identifier)
-        return cv
-    }()
-    
-    let key = "c5c4dd9d7c706bf5ae3e98cf7691ec75"
-    let perPage = "365"
-    let text = "Автомобили"
-    
-    var photos = NSMutableOrderedSet()
-    
-    let countItem: CGFloat = 2
-    let sectionInsert = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     
     lazy var buttonLeft: UIButton = {
         let button = UIButton(type: .system)
@@ -52,10 +34,13 @@ class HomeVC_One: UIViewController, UICollectionViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTableView()
+        fetchPhotos()
         
         view.addSubview(photoLabel)
         view.addSubview(buttonLeft)
         view.backgroundColor = #colorLiteral(red: 0.5458797216, green: 0.1337981224, blue: 0.4389412999, alpha: 1)
+        tableView.backgroundColor = #colorLiteral(red: 0.5458797216, green: 0.1337981224, blue: 0.4389412999, alpha: 1)
         
         if let tabBar = self.tabBarController?.tabBar {
             // Убираем фон
@@ -68,59 +53,12 @@ class HomeVC_One: UIViewController, UICollectionViewDataSource {
             tabBar.standardAppearance = appearance
             tabBar.scrollEdgeAppearance = appearance
             
-            view.addSubview(collectionView)
-            collectionView.dataSource = self
-            collectionView.delegate = self
-            
-            NSLayoutConstraint.activate([
-                collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 110),
-                collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
-            
-            let param = ["api_key": key,
-                         "format": "json",
-                         "method": "flickr.photos.search",
-                         "per_page": perPage,
-                         "text": text,
-                         "nojsoncallback": "1"]
-            
-            AF.request("https://api.flickr.com/services/rest/", parameters: param).responseJSON { (responseJSON) in
-                
+         
                 // print(responseJSON.description)
                 
-                switch responseJSON.result {
-                case .success(let value):
-                    //                guard let photos = FlickrPhoto.getArray(from: value) else { return }
-                    //                self.flickrPhotoArray = photos
-                    
-                    guard
-                        let jsonContainer = value as? [String: Any],
-                        let jsonPhotos = jsonContainer["photos"] as? [String: Any],
-                        let jsonArray = jsonPhotos["photo"] as? [[String: Any]]
-                    else {
-                        return
-                    }
-                    let flickrPhotosObj = jsonArray.map {
-                        Class_Object_TBC_1(farm: $0["farm"] as! Int,
-                                           server: $0["server"] as! String,
-                                           photoID: $0["id"] as! String,
-                                           secret: $0["secret"] as! String)
-                    }
-                    
-                    self.photos.addObjects(from: flickrPhotosObj)
-                    print(self.photos)
-                    
-                    self.collectionView.reloadData()
-                case .failure(let error):
-                    print(error)
-                }
+              
             }
         }
-    }
-    
-    
     
     @objc private func didTapButton() {
         let vc = HomeViewController()
@@ -128,46 +66,50 @@ class HomeVC_One: UIViewController, UICollectionViewDataSource {
         present(vc, animated: true)
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(CellsMemTB_1.self, forCellReuseIdentifier: "PhotoCell")
+        tableView.estimatedRowHeight = 250
+        tableView.rowHeight = UITableView.automaticDimension
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+    
+    private func fetchPhotos() {
+        let urlString = "https://api.unsplash.com/photos?page=346&client_id=cNtxMzMLT8_GFa8TE8ACB5MWVJFOILOE57YRviGQxuI"
+        guard let url = URL(string: urlString) else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let data = data, error == nil else { return }
+            do {
+                let response = try JSONDecoder().decode([UnsplashPhotoAll].self, from: data)
+                DispatchQueue.main.async {
+                    self.photos = response
+                    self.tableView.reloadData()
+                }
+            } catch {
+                print("Error decoding JSON: \(error)")
+            }
+        }.resume()
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return photos.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellsMemTB_1.identifier, for: indexPath) as! CellsMemTB_1
-        let imageURL = (photos.object(at: indexPath.row) as! Class_Object_TBC_1).url
-        
-        cell.backgroundColor = .systemBlue
-        
-        cell.request?.cancel()
-        cell.request = AF.download(imageURL).responseData(completionHandler: { (response) in
-            if let data = response.value {
-                let image = UIImage(data: data)
-                cell.imageViews.image = image
-            }
-        })
-        
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! CellsMemTB_1
+        cell.configure(with: photos[indexPath.row])
+        cell.backgroundColor = #colorLiteral(red: 0.5458797216, green: 0.1337981224, blue: 0.4389412999, alpha: 1)
         return cell
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let padding: CGFloat = 10
-        let totalSpacing = (2 - 1) * padding + 20 // Отступы между ячейками и от краев
-        let width = (collectionView.frame.width - totalSpacing) / 2
-        return CGSize(width: width, height: 100)
-    }
-}
-
-// size sections
-extension HomeVC_One: UICollectionViewDelegateFlowLayout {
-    
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        sectionInsert.left
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sectionInsert
     }
     
 }

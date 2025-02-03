@@ -11,7 +11,8 @@ class HomeViewController: UIViewController {
     
     lazy var buttonOne: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitle("Это кнопка номер один", for: .normal)
+        button.setTitle("All Photo / Search Photo / Шедеврум", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .regular)
         button.backgroundColor = #colorLiteral(red: 0.2824099586, green: 0.2401617251, blue: 0.5460324755, alpha: 1)
         button.addShadow()
         button.frame = CGRect(x: 16, y: 130, width: 350, height: 100)
@@ -21,7 +22,8 @@ class HomeViewController: UIViewController {
     
     lazy var buttonTwo: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitle("Это кнопка номер два", for: .normal)
+        button.setTitle("Carusel / Museum / Gif", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .regular)
         button.backgroundColor = #colorLiteral(red: 0.2824099586, green: 0.2401617251, blue: 0.5460324755, alpha: 1)
         button.frame = CGRect(x: 16, y: 280, width: 350, height: 100)
         button.addTarget(self, action: #selector(tapNextBarTwoButton), for: .touchUpInside)
@@ -31,6 +33,7 @@ class HomeViewController: UIViewController {
     lazy var buttonThree: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle("Это кнопка номер три", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .regular)
         button.backgroundColor = #colorLiteral(red: 0.2824099586, green: 0.2401617251, blue: 0.5460324755, alpha: 1)
         button.frame = CGRect(x: 16, y: 430, width: 350, height: 100)
         button.addTarget(self, action: #selector(tapNextBarThreeButton), for: .touchUpInside)
@@ -40,6 +43,7 @@ class HomeViewController: UIViewController {
     lazy var buttonFour: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle("Это кнопка номер четыре", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .regular)
         button.backgroundColor = #colorLiteral(red: 0.2824099586, green: 0.2401617251, blue: 0.5460324755, alpha: 1)
         button.frame = CGRect(x: 16, y: 580, width: 350, height: 100)
         button.addTarget(self, action: #selector(tapNextBarFourButton), for: .touchUpInside)
