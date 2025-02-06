@@ -67,7 +67,7 @@ class ApiReq_1TB {
                 // Parse the data
                 let decoder = JSONDecoder()
                 let jsonData = try decoder.decode(RusMuseum.self, from: data)
-                
+                print(jsonData)
                 // Back to the main thread
                 DispatchQueue.main.async {
                    // completion(.success(jsonData))

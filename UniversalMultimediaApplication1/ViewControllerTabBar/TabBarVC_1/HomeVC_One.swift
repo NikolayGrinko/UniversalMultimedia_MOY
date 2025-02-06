@@ -24,6 +24,7 @@ class HomeVC_One: UIViewController, UITableViewDataSource, UITableViewDelegate {
         return photoLab
     }()
     
+    
     lazy var buttonLeft: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "arrow.left"), for: .normal)

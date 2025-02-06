@@ -34,9 +34,9 @@ class TabBarControllerThree: UITabBarController {
                 image: UIImage(systemName: "house.fill")
             ),
             generateVC(
-                viewController: PersonVC_Three(),
-                title: "Personal Info",
-                image: UIImage(systemName: "person.fill")
+                viewController: SearchKinopoiskMovie(),
+                title: "SearchMovie",
+                image: UIImage(systemName: "movieclapper")
             ),
             generateVC(
                 viewController: SettingsVC_Three(),
