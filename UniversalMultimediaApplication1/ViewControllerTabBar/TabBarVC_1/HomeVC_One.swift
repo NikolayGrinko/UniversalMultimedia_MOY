@@ -1,6 +1,6 @@
 //
 //  HomeVC_One.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 29.01.2025.
 //

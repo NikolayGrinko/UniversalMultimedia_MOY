@@ -1,6 +1,6 @@
 //
 //  GifModel.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 27.01.2025.
 //

@@ -1,6 +1,6 @@
 //
 //  PhotoCaruselOne.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 21.01.2025.
 //

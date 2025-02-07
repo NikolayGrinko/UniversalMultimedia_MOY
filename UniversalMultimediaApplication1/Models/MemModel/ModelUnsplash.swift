@@ -1,6 +1,6 @@
 //
 //  ModelUnsplash.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 24.01.2025.
 //
