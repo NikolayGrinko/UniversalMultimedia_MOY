@@ -9,7 +9,7 @@ import UIKit
 import Alamofire
 
 
-class HomeVC_One: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class AllPhoto: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     private let tableView = UITableView()
     private var photos: [UnsplashPhotoAll] = []
@@ -77,7 +77,7 @@ class HomeVC_One: UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.rowHeight = UITableView.automaticDimension
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)

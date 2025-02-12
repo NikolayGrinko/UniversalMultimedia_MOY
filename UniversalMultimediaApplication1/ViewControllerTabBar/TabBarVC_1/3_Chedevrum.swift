@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-class SettingsVC_One: UIViewController {
+class Chedevrum: UIViewController {
 
     private let webView: WKWebView = {
         let webView = WKWebView()

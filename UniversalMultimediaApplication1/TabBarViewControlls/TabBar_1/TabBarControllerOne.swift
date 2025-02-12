@@ -30,7 +30,7 @@ class TabBarControllerOne: UITabBarController {
     private func generateTabBar() {
         viewControllers = [
             generateVC(
-                viewController: HomeVC_One(),
+                viewController: AllPhoto(),
                 title: "All Photo",
                 image: UIImage(systemName: "photo")
             ),
@@ -40,7 +40,7 @@ class TabBarControllerOne: UITabBarController {
                 image: UIImage(systemName: "camera.fill")
             ),
             generateVC(
-                viewController: SettingsVC_One(),
+                viewController: Chedevrum(),
                 title: "Шедеврум",
                 image: UIImage(systemName: "bubble.circle.fill")
             )
