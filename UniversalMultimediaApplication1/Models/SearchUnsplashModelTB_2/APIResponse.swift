@@ -9,9 +9,9 @@
 struct APIResponse: Codable {
     let total: Int
     let total_pages: Int
-    let results: [Result]
+    let results: [Results]
 }
-struct Result: Codable {
+struct Results: Codable {
     let id: String
     let urls: URLS
     

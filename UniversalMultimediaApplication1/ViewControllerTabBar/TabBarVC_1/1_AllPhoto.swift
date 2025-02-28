@@ -54,10 +54,6 @@ class AllPhoto: UIViewController, UITableViewDataSource, UITableViewDelegate {
             tabBar.standardAppearance = appearance
             tabBar.scrollEdgeAppearance = appearance
             
-         
-                // print(responseJSON.description)
-                
-              
             }
         }
     
@@ -77,10 +73,10 @@ class AllPhoto: UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.rowHeight = UITableView.automaticDimension
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 85),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     

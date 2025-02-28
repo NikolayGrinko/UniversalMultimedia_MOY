@@ -13,10 +13,22 @@ class SearchKinopoiskMovie: UIViewController, UICollectionViewDelegate, UICollec
     private var collectionView: UICollectionView!
     private var movies: [Movie] = []
     
+    private var photoLabel: UILabel = {
+        let photoLab = UILabel()
+        photoLab.text = "Поиск ФИЛЬМОВ"
+        photoLab.textColor = .systemBlue
+        photoLab.numberOfLines = 1
+        photoLab.textAlignment = .center
+        photoLab.font = .systemFont(ofSize: 20, weight: .semibold, width: .standard)
+        photoLab.frame = CGRect(x: 100, y: 50, width: 200, height: 55)
+        return photoLab
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.5458797216, green: 0.1337981224, blue: 0.4389412999, alpha: 1)
         view.addSubview(searchBar)
+        view.addSubview(photoLabel)
         setupSearchBar()
         setupCollectionView()
     }

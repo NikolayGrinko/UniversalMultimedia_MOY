@@ -26,7 +26,7 @@ class SearchVC_One: UIViewController, UICollectionViewDataSource, UISearchBarDel
     return button
     }()
 
-var results: [Result] = []
+var results: [Results] = []
 
 let searchbar = UISearchBar()
 

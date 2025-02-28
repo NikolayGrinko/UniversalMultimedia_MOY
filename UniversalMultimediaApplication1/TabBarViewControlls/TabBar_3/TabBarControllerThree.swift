@@ -29,7 +29,7 @@ class TabBarControllerThree: UITabBarController {
     private func generateTabBar() {
         viewControllers = [
             generateVC(
-                viewController: HomeVC_Three(),
+                viewController: ChatGPT_VC(),
                 title: "Home",
                 image: UIImage(systemName: "house.fill")
             ),
