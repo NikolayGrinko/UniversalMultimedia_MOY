@@ -1,6 +1,6 @@
 //
 //  CellsMemTB_2.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 23.01.2025.
 //

@@ -1,6 +1,6 @@
 //
 //  TabBarControllerOne.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 21.01.2025.
 //
@@ -29,14 +29,14 @@ class TabBarControllerThree: UITabBarController {
     private func generateTabBar() {
         viewControllers = [
             generateVC(
-                viewController: HomeVC_Three(),
+                viewController: ChatGPT_VC(),
                 title: "Home",
                 image: UIImage(systemName: "house.fill")
             ),
             generateVC(
-                viewController: PersonVC_Three(),
-                title: "Personal Info",
-                image: UIImage(systemName: "person.fill")
+                viewController: SearchKinopoiskMovie(),
+                title: "SearchMovie",
+                image: UIImage(systemName: "movieclapper")
             ),
             generateVC(
                 viewController: SettingsVC_Three(),

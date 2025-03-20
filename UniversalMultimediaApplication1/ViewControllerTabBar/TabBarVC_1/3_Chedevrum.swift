@@ -1,6 +1,6 @@
 //
 //  SettingsVC_One.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 21.01.2025.
 //
@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-class SettingsVC_One: UIViewController {
+class Chedevrum: UIViewController {
 
     private let webView: WKWebView = {
         let webView = WKWebView()

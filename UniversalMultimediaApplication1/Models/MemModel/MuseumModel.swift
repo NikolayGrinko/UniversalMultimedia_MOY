@@ -1,6 +1,6 @@
 //
 //  MuseumModel.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 30.01.2025.
 //

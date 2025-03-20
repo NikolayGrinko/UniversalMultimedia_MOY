@@ -1,6 +1,6 @@
 //
 //  PhotoCaruselOne.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 21.01.2025.
 //
@@ -41,6 +41,7 @@ class PhotoCaruselOne: UIViewController {
         transformLayer.frame = self.view.bounds
         view.layer.addSublayer(transformLayer)
         
+        // Здесь заменить на загрузку и отображение фото
         for i in 1...6 {
             addImageCard(name: "\(i)")
             turnCarusel()
@@ -71,8 +72,6 @@ class PhotoCaruselOne: UIViewController {
         imageLayer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
         guard let imageCardImage = UIImage(named: name)?.cgImage else {return}
-        
-        
         
         imageLayer.contents = imageCardImage
         imageLayer.contentsGravity = .resizeAspectFill

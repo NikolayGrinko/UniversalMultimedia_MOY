@@ -1,6 +1,6 @@
 //
 //  TabBarControllerOne.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 21.01.2025.
 //
@@ -25,8 +25,6 @@ class TabBarControllerTwo: UITabBarController {
         let navigationController = UINavigationController(rootViewController: vc)
         navigationController.modalPresentationStyle = .fullScreen // Для полноэкранного отображения
         present(navigationController, animated: true, completion: nil)
-//        vc.modalPresentationStyle = .custom
-//        present(vc, animated: true)
     }
     
     private func generateTabBar() {
@@ -38,7 +36,7 @@ class TabBarControllerTwo: UITabBarController {
             ),
             generateVC(
                 viewController: MuseumVC_Two(),
-                title: "Personal Info",
+                title: "Museum EUROPE",
                 image: UIImage(systemName: "person.fill")
             ),
             generateVC(

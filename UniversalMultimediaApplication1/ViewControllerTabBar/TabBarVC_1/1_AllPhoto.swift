@@ -1,6 +1,6 @@
 //
 //  HomeVC_One.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 29.01.2025.
 //
@@ -9,7 +9,7 @@ import UIKit
 import Alamofire
 
 
-class HomeVC_One: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class AllPhoto: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     private let tableView = UITableView()
     private var photos: [UnsplashPhotoAll] = []
@@ -23,6 +23,7 @@ class HomeVC_One: UIViewController, UITableViewDataSource, UITableViewDelegate {
         photoLab.frame = CGRect(x: 135, y: 55, width: 150, height: 35)
         return photoLab
     }()
+    
     
     lazy var buttonLeft: UIButton = {
         let button = UIButton(type: .system)
@@ -53,10 +54,6 @@ class HomeVC_One: UIViewController, UITableViewDataSource, UITableViewDelegate {
             tabBar.standardAppearance = appearance
             tabBar.scrollEdgeAppearance = appearance
             
-         
-                // print(responseJSON.description)
-                
-              
             }
         }
     
@@ -76,10 +73,10 @@ class HomeVC_One: UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.rowHeight = UITableView.automaticDimension
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 85),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     

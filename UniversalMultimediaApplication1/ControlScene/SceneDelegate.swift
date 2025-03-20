@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 20.01.2025.
 //
@@ -17,14 +17,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         SceneDelegate.window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         SceneDelegate.window?.windowScene = windowScene
-        //window?.rootViewController = TabBarBabyProfile()
         SceneDelegate.window?.rootViewController = AnimeLaunchScreenVC()
         SceneDelegate.window?.makeKeyAndVisible()
-//        guard let windowScene = (scene as? UIWindowScene) else { return }
-//        window = UIWindow(windowScene: windowScene)
-//        window?.makeKeyAndVisible()
-//        window?.backgroundColor = .systemBackground
-//        window?.rootViewController = DemoViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

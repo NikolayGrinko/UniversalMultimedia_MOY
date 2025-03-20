@@ -1,6 +1,6 @@
 //
 //  RandomVC.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 20.01.2025.
 //
@@ -32,7 +32,7 @@ class HomeViewController: UIViewController {
     
     lazy var buttonThree: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitle("Это кнопка номер три", for: .normal)
+        button.setTitle("ChatGPT / Search Movie / Settings", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .regular)
         button.backgroundColor = #colorLiteral(red: 0.2824099586, green: 0.2401617251, blue: 0.5460324755, alpha: 1)
         button.frame = CGRect(x: 16, y: 430, width: 350, height: 100)

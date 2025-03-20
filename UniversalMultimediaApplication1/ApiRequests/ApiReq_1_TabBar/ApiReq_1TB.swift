@@ -1,6 +1,6 @@
 //
 //  ApiReq_1TB.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 21.01.2025.
 //
@@ -34,7 +34,7 @@ class ApiReq_1TB {
     
     private var dataTask: URLSessionDataTask?
     
-    func getPopularMoviesDatas(completion: @escaping (Result) -> Void) {
+    func getPopularMoviesDatas(completion: @escaping (Results) -> Void) {
         
         let popularMoviesURL = "https://api.themoviedb.org/3/movie/popular?api_key=4e0be2c22f7268edffde97481d49064a&language=en-US&page=1"
         
@@ -67,7 +67,7 @@ class ApiReq_1TB {
                 // Parse the data
                 let decoder = JSONDecoder()
                 let jsonData = try decoder.decode(RusMuseum.self, from: data)
-                
+                print(jsonData)
                 // Back to the main thread
                 DispatchQueue.main.async {
                    // completion(.success(jsonData))

@@ -1,6 +1,6 @@
 //
 //  SearchVC_One.swift
-//  UniversalMultimediaApplication1
+//  UniversalMultimedia_MOY
 //
 //  Created by Николай Гринько on 21.01.2025.
 //
@@ -26,7 +26,7 @@ class SearchVC_One: UIViewController, UICollectionViewDataSource, UISearchBarDel
     return button
     }()
 
-var results: [Result] = []
+var results: [Results] = []
 
 let searchbar = UISearchBar()
 
