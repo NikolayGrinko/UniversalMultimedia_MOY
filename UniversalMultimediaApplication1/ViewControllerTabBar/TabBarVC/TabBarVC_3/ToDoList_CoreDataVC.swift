@@ -34,7 +34,8 @@ class ToDoList_CoreDataVC: UIViewController {
     
     @objc private func forvardButtonTap() {
         print("TapForvard")
-       // TaskListRouter.createModule()
+        let taskListView = TaskListRouter.createModule() // ✅ Создаём экран
+        navigationController?.pushViewController(taskListView, animated: true) // ✅ Теперь переход в стек навигации
     }
     
     override func viewDidLoad() {
