@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingsVC_Three: UIViewController {
+class ToDoList_CoreDataVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

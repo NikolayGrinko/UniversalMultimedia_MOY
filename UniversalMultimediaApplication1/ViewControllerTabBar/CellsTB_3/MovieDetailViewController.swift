@@ -129,8 +129,8 @@ class MovieDetailViewController: UIViewController {
        // movieImageView.loadImage(from: "\(movie.poster?.url)")
         titleLabel.text = movie.name
         descriptionLabel.text = movie.description
-        yearLabel.text = "Год выпуска: \(movie.year)"
-        ratingLabel.text = "Рейтинг: \(movie.rating)"
+        yearLabel.text = "Год выпуска: \(String(describing: movie.year))"
+        ratingLabel.text = "Рейтинг: \(String(describing: movie.rating))"
         
         if let imageUrls = URL(string: movie.poster?.url ?? "") {
             DispatchQueue.global().async {
