@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 class HomeViewController: UIViewController {
     
@@ -15,7 +16,7 @@ class HomeViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .regular)
         button.backgroundColor = #colorLiteral(red: 0.2824099586, green: 0.2401617251, blue: 0.5460324755, alpha: 1)
         button.addShadow()
-        button.frame = CGRect(x: 16, y: 130, width: 350, height: 100)
+        button.frame = CGRect(x: 15, y: 150, width: 380, height: 80)
         button.addTarget(self, action: #selector(tapNextBarOneButton), for: .touchUpInside)
         return button
     }()
@@ -25,7 +26,7 @@ class HomeViewController: UIViewController {
         button.setTitle("Carusel / Museum / Gif", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .regular)
         button.backgroundColor = #colorLiteral(red: 0.2824099586, green: 0.2401617251, blue: 0.5460324755, alpha: 1)
-        button.frame = CGRect(x: 16, y: 280, width: 350, height: 100)
+        button.frame = CGRect(x: 15, y: 260, width: 380, height: 80)
         button.addTarget(self, action: #selector(tapNextBarTwoButton), for: .touchUpInside)
         return button
     }()
@@ -35,7 +36,7 @@ class HomeViewController: UIViewController {
         button.setTitle("ChatGPT / Search Movie / ToDoList", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .regular)
         button.backgroundColor = #colorLiteral(red: 0.2824099586, green: 0.2401617251, blue: 0.5460324755, alpha: 1)
-        button.frame = CGRect(x: 16, y: 430, width: 350, height: 100)
+        button.frame = CGRect(x: 15, y: 370, width: 380, height: 80)
         button.addTarget(self, action: #selector(tapNextBarThreeButton), for: .touchUpInside)
         return button
     }()
@@ -45,14 +46,27 @@ class HomeViewController: UIViewController {
         button.setTitle("Wildberries/-----/------", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .regular)
         button.backgroundColor = #colorLiteral(red: 0.2824099586, green: 0.2401617251, blue: 0.5460324755, alpha: 1)
-        button.frame = CGRect(x: 16, y: 580, width: 350, height: 100)
+        button.frame = CGRect(x: 15, y: 480, width: 380, height: 80)
         button.addTarget(self, action: #selector(tapNextBarFourButton), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var signOutButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Выйти", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemRed
+        button.layer.cornerRadius = 10
+        button.titleLabel?.font = .boldSystemFont(ofSize: 16)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(signOutTapped), for: .touchUpInside)
         return button
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Все что нужно здесь 👇"
+        setupUI()
         settingUpButtons()
         
         buttonOne.addShadow()
@@ -65,6 +79,17 @@ class HomeViewController: UIViewController {
         view.addSubview(buttonThree)
         view.addSubview(buttonFour)
         gradientView()
+    }
+    
+    private func setupUI() {
+        view.addSubview(signOutButton)
+        
+        NSLayoutConstraint.activate([
+            signOutButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
+            signOutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            signOutButton.widthAnchor.constraint(equalToConstant: 80),
+            signOutButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
     }
     
     private func settingUpButtons() {
@@ -102,9 +127,6 @@ class HomeViewController: UIViewController {
         let vc = TabBarControllerOne()
         
         // Оборачиваем его в UINavigationController
-//        let navigationController = UINavigationController(rootViewController: vc)
-//        navigationController.modalPresentationStyle = .fullScreen // Для полноэкранного отображения
-//        present(navigationController, animated: true, completion: nil)
         vc.modalPresentationStyle = .custom
         present(vc, animated: true)
     }
@@ -116,8 +138,6 @@ class HomeViewController: UIViewController {
         let navigationController = UINavigationController(rootViewController: vc)
         navigationController.modalPresentationStyle = .fullScreen // Для полноэкранного отображения
         present(navigationController, animated: true, completion: nil)
-//        vc.modalPresentationStyle = .custom
-//        present(vc, animated: true)
     }
     
     @objc private func tapNextBarThreeButton() {
@@ -127,8 +147,6 @@ class HomeViewController: UIViewController {
         let navigationController = UINavigationController(rootViewController: vc)
         navigationController.modalPresentationStyle = .fullScreen // Для полноэкранного отображения
         present(navigationController, animated: true, completion: nil)
-//        vc.modalPresentationStyle = .custom
-//        present(vc, animated: true)
     }
     
     @objc private func tapNextBarFourButton() {
@@ -138,8 +156,29 @@ class HomeViewController: UIViewController {
         let navigationController = UINavigationController(rootViewController: vc)
         navigationController.modalPresentationStyle = .fullScreen // Для полноэкранного отображения
         present(navigationController, animated: true, completion: nil)
-//        vc.modalPresentationStyle = .custom
-//        present(vc, animated: true)
     }
     
+    @objc private func signOutTapped() {
+        // Показываем alert с подтверждением
+        let alert = UIAlertController(title: "Выход",
+                                    message: "Вы уверены, что хотите выйти?",
+                                    preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Выйти", style: .destructive) { [weak self] _ in
+            self?.signOut()
+        })
+        
+        present(alert, animated: true)
+    }
+    
+    private func signOut() {
+        // Выходим из Google аккаунта
+        GIDSignIn.sharedInstance.signOut()
+        
+        // Возвращаемся на экран входа
+        dismiss(animated: true) {
+            print("🟢 Successfully signed out")
+        }
+    }
 }

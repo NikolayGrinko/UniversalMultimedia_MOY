@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -19,6 +20,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         SceneDelegate.window?.windowScene = windowScene
         SceneDelegate.window?.rootViewController = AnimeLaunchScreenVC()
         SceneDelegate.window?.makeKeyAndVisible()
+        
+        if let urlContext = connectionOptions.urlContexts.first {
+            GIDSignIn.sharedInstance.handle(urlContext.url)
+        }
 
     }
 
@@ -51,6 +56,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let url = URLContexts.first?.url else { return }
+        GIDSignIn.sharedInstance.handle(url)
+    }
 
 }
 

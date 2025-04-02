@@ -5,9 +5,21 @@
 //  Created by Николай Гринько on 20.01.2025.
 //
 
+// ClientID - 968246070699-njdqhlmlh37kgouqjn392vdbd823pjhd.apps.googleusercontent.com
+
 import UIKit
+import GoogleSignIn
 
 class LoginRegistrationVC: UIViewController, UITextFieldDelegate {
+    
+    private lazy var signInButton: GIDSignInButton = {
+        let button = GIDSignInButton()
+        button.style = .wide
+        button.colorScheme = .dark
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = true
+        return button
+    }()
     
     private let titleLabels: UILabel = {
         let label = UILabel()
@@ -18,6 +30,7 @@ class LoginRegistrationVC: UIViewController, UITextFieldDelegate {
         return label
     }()
     
+    // Переопределяемый метод UITextField
     private func createTextField(placeholder: String, isSecure: Bool) -> UITextField {
         let textField = UITextField()
         textField.placeholder = placeholder
@@ -143,14 +156,19 @@ class LoginRegistrationVC: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("🟢 ViewDidLoad started")
+        
+        view.addSubview(signInButton)
+        setupGoogleSignIn()
+        setupUI()
         setupToggleButton()
         setupConfirmToggleButton()
        
         view.applyGradient(colors: [.customBlue, .customGreen],
                                    startPoint: CGPoint(x: 0.0, y: 0.0),
                                    endPoint: CGPoint(x: 1.0, y: 1.0))
-        
-        setupUI()
+       
+       
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -161,9 +179,115 @@ class LoginRegistrationVC: UIViewController, UITextFieldDelegate {
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(buttonTapped(_:)))
+        signInButton.addGestureRecognizer(tapGesture)
+        
+        print("🟢 Added tap gesture recognizer to button")
+        
+        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+            if let error = error {
+                print("🔴 Error checking previous sign-in: \(error.localizedDescription)")
+            }
+            if let user = user {
+                print("🟢 Found previous sign-in: \(user.profile?.email ?? "no email")")
+            } else {
+                print("🟢 No previous sign-in found")
+            }
+        }
     }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("🟢 ViewWillAppear")
+        // Check existing sign in when view appears
+        checkExistingSignIn()
+    }
+    
+    private func checkExistingSignIn() {
+        if GIDSignIn.sharedInstance.hasPreviousSignIn() {
+            GIDSignIn.sharedInstance.restorePreviousSignIn { [weak self] user, error in
+                if let error = error {
+                    print("Error restoring sign in: \(error.localizedDescription)")
+                } else if let user = user {
+                    self?.proceedToProfile(with: user)
+                }
+            }
+        }
+    }
+   
+    private func setupGoogleSignIn() {
+        print("🟢 Setting up Google Sign In...")
+        
+        let clientID = "968246070699-njdqhlmlh37kgouqjn392vdbd823pjhd.apps.googleusercontent.com"
+        GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientID)
+        print("🟢 Google Sign In configuration set with clientID: \(clientID)")
+    }
+    
+    @objc private func buttonTapped(_ sender: UITapGestureRecognizer) {
+        print("🟢 Button tapped via gesture recognizer")
+        signInTapped()
+    }
+    
+    @objc private func signInTapped() {
+        print("🟢 Sign In Button Tapped!")
+        
+        print("🟢 Starting Google Sign In process...")
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] signInResult, error in
+            guard let self = self else {
+                print("🔴 Self is nil in completion handler")
+                return
+            }
+            
+            if let error = error {
+                print("🔴 Sign In Error: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Error", message: error.localizedDescription)
+                }
+                return
+            }
+            
+            print("🟢 Sign in attempt completed")
+            
+            guard let signInResult = signInResult else {
+                print("🔴 No sign in result")
+                return
+            }
+            
+            guard let profile = signInResult.user.profile else {
+                print("🔴 No user profile")
+                return
+            }
+            
+            print("🟢 Successfully signed in!")
+            print("User: \(profile.name ?? "No name")")
+            print("Email: \(profile.email)")
+            
+            DispatchQueue.main.async {
+                let homeVC = HomeViewController()
+                let navigationController = UINavigationController(rootViewController: homeVC)
+                navigationController.modalPresentationStyle = .fullScreen
+                self.present(navigationController, animated: true) {
+                    print("🟢 Presented HomeViewController")
+                }
+            }
+        }
+    }
+    
+    private func proceedToProfile(with user: GIDGoogleUser) {
+       
+        let profileVC = HomeViewController()
+        navigationController?.pushViewController(profileVC, animated: true)
+    }
+    
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {
@@ -212,7 +336,8 @@ class LoginRegistrationVC: UIViewController, UITextFieldDelegate {
         stackViewTopConstraints = stackView.topAnchor.constraint(equalTo: view.centerYAnchor)
         
         NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor), stackViewTopConstraints!,
+            //stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor), stackViewTopConstraints!,
+            stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 300),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             
@@ -220,9 +345,25 @@ class LoginRegistrationVC: UIViewController, UITextFieldDelegate {
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
             confirmPasswordTextField.heightAnchor.constraint(equalToConstant: 50),
             actionButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            signInButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            signInButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 600),
+            signInButton.widthAnchor.constraint(equalToConstant: 280),
+            signInButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         forgotPasswordButton.isHidden = !isLoginMode
+        
+        signInButton.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
+        signInButton.addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpInside, .touchUpOutside])
+    }
+    
+    @objc private func buttonTouchDown() {
+        signInButton.alpha = 0.7
+    }
+    
+    @objc private func buttonTouchUp() {
+        signInButton.alpha = 1.0
     }
     
     @objc private func switchAuthMode() {
@@ -255,7 +396,6 @@ class LoginRegistrationVC: UIViewController, UITextFieldDelegate {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-    
 }
 
 private extension UITextField {
@@ -265,6 +405,4 @@ private extension UITextField {
         self.leftView = paddingView
         self.leftViewMode = .always
     }
-    
 }
-

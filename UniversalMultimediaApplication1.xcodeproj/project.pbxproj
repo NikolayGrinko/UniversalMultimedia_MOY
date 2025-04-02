@@ -10,10 +10,14 @@
 		203FBFF82D49820E00AF1C1B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 203FBFF72D49820E00AF1C1B /* Alamofire */; };
 		2068480C2D4839E000DA2C14 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 2068480B2D4839E000DA2C14 /* SDWebImage */; };
 		2068480E2D4839E000DA2C14 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2068480D2D4839E000DA2C14 /* SDWebImageMapKit */; };
+		CCDDE8C8E18722F3ABA49278 /* Pods_UniversalMultimediaApplication1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C9716E3FA6447D0D85D2954 /* Pods_UniversalMultimediaApplication1.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		20918A0B2D3E248A00888F3F /* UniversalMultimediaApplication1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UniversalMultimediaApplication1.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		22F2602A5D34EE845066BF2D /* Pods-UniversalMultimediaApplication1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UniversalMultimediaApplication1.release.xcconfig"; path = "Target Support Files/Pods-UniversalMultimediaApplication1/Pods-UniversalMultimediaApplication1.release.xcconfig"; sourceTree = "<group>"; };
+		3CD193E043A2D1FD68769F48 /* Pods-UniversalMultimediaApplication1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UniversalMultimediaApplication1.debug.xcconfig"; path = "Target Support Files/Pods-UniversalMultimediaApplication1/Pods-UniversalMultimediaApplication1.debug.xcconfig"; sourceTree = "<group>"; };
+		8C9716E3FA6447D0D85D2954 /* Pods_UniversalMultimediaApplication1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UniversalMultimediaApplication1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -45,6 +49,7 @@
 				203FBFF82D49820E00AF1C1B /* Alamofire in Frameworks */,
 				2068480E2D4839E000DA2C14 /* SDWebImageMapKit in Frameworks */,
 				2068480C2D4839E000DA2C14 /* SDWebImage in Frameworks */,
+				CCDDE8C8E18722F3ABA49278 /* Pods_UniversalMultimediaApplication1.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +61,8 @@
 			children = (
 				20918A0D2D3E248A00888F3F /* UniversalMultimediaApplication1 */,
 				20918A0C2D3E248A00888F3F /* Products */,
+				29755216A64DCFFEDBAB8C49 /* Pods */,
+				C8CCB70AE86233CBCC6BFC5C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,6 +74,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		29755216A64DCFFEDBAB8C49 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3CD193E043A2D1FD68769F48 /* Pods-UniversalMultimediaApplication1.debug.xcconfig */,
+				22F2602A5D34EE845066BF2D /* Pods-UniversalMultimediaApplication1.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		C8CCB70AE86233CBCC6BFC5C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8C9716E3FA6447D0D85D2954 /* Pods_UniversalMultimediaApplication1.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,9 +98,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 20918A1E2D3E248C00888F3F /* Build configuration list for PBXNativeTarget "UniversalMultimediaApplication1" */;
 			buildPhases = (
+				D1445D78FDE356E2250EC7AD /* [CP] Check Pods Manifest.lock */,
 				20918A072D3E248A00888F3F /* Sources */,
 				20918A082D3E248A00888F3F /* Frameworks */,
 				20918A092D3E248A00888F3F /* Resources */,
+				AAC68F0A6A0569525A846E2C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -143,6 +169,52 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		AAC68F0A6A0569525A846E2C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UniversalMultimediaApplication1/Pods-UniversalMultimediaApplication1-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UniversalMultimediaApplication1/Pods-UniversalMultimediaApplication1-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UniversalMultimediaApplication1/Pods-UniversalMultimediaApplication1-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D1445D78FDE356E2250EC7AD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-UniversalMultimediaApplication1-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		20918A072D3E248A00888F3F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -156,6 +228,7 @@
 /* Begin XCBuildConfiguration section */
 		20918A1F2D3E248C00888F3F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3CD193E043A2D1FD68769F48 /* Pods-UniversalMultimediaApplication1.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -172,7 +245,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "-.0.UniversalMultimediaApplication1";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nikolajgrinko.UniversalMultimediaApplication1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -184,6 +257,7 @@
 		};
 		20918A202D3E248C00888F3F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 22F2602A5D34EE845066BF2D /* Pods-UniversalMultimediaApplication1.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -200,7 +274,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "-.0.UniversalMultimediaApplication1";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nikolajgrinko.UniversalMultimediaApplication1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -248,7 +322,7 @@
 				DEVELOPMENT_TEAM = W2P9X4349P;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -312,7 +386,7 @@
 				DEVELOPMENT_TEAM = W2P9X4349P;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
