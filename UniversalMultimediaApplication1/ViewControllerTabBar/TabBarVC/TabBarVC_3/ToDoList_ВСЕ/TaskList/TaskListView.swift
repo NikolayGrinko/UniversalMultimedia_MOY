@@ -32,7 +32,7 @@ class TaskListView: UIViewController, TaskListViewProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupNavigationBar()
         tableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.identifier)
         tableView.rowHeight = UITableView.automaticDimension // ✅ Авто-высота
         tableView.backgroundColor = #colorLiteral(red: 0.6240465045, green: 0.09995300323, blue: 0.4080937505, alpha: 1)
@@ -43,6 +43,36 @@ class TaskListView: UIViewController, TaskListViewProtocol {
         setupTaskCountLabel()
         presenter?.loadTasks()
     }
+    
+    private func setupNavigationBar() {
+            // Configure navigation bar appearance
+            if #available(iOS 13.0, *) {
+                let appearance = UINavigationBarAppearance()
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundColor = #colorLiteral(red: 0.6369494796, green: 0.09633842856, blue: 0.4035278857, alpha: 1)
+                appearance.shadowColor = .clear
+                
+                appearance.titleTextAttributes = [
+                    .foregroundColor: UIColor.white,
+                    .font: UIFont.systemFont(ofSize: 18, weight: .semibold)
+                ]
+                
+                navigationController?.navigationBar.standardAppearance = appearance
+                navigationController?.navigationBar.scrollEdgeAppearance = appearance
+                navigationController?.navigationBar.compactAppearance = appearance
+            }
+            
+            navigationController?.navigationBar.tintColor = .white
+            navigationController?.navigationBar.isTranslucent = false
+            
+            // Set the title
+            title = "Каталог"
+            
+            // Enable back button (this will use the system back button)
+            navigationItem.leftItemsSupplementBackButton = true
+//            navigationController?.navigationBar.backIndicatorImage = UIImage(systemName: "chevron.backward")
+//            navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(systemName: "chevron.backward")
+        }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

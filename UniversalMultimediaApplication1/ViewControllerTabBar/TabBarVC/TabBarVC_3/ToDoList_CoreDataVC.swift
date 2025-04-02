@@ -44,7 +44,31 @@ class ToDoList_CoreDataVC: UIViewController {
         view.addSubview(buttonTapForward)
         
         
+        
         gradientView()
+    }
+    
+    private func setupNavigationBar() {
+        // Configure navigation bar appearance
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 1)
+            appearance.shadowColor = .clear
+            
+            appearance.titleTextAttributes = [
+                .foregroundColor: UIColor.white,
+                .font: UIFont.systemFont(ofSize: 18, weight: .semibold)
+            ]
+            
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+            navigationController?.navigationBar.compactAppearance = appearance
+        }
+        
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.isTranslucent = false
+
     }
     private func gradientView() {
         view.applyGradient(colors: [.customBlue, .customGreen],
