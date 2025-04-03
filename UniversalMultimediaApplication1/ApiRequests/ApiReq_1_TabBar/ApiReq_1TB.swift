@@ -7,7 +7,57 @@
 
 import Foundation
 
+
 class ApiReq_1TB {
+    
+    private var dataTask: URLSessionDataTask?
+    
+    // CHANGE: Fix completion handler type and error handling
+    func getPopularMoviesDatas(completion: @escaping (Result<RusMuseum, Error>) -> Void) {
+        
+        let popularMoviesURL = "https://api.themoviedb.org/3/movie/popular?api_key=4e0be2c22f7268edffde97481d49064a&language=en-US&page=1"
+        
+        guard let url = URL(string: popularMoviesURL) else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+            return
+        }
+        
+        dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Response"])))
+                return
+            }
+            
+            guard (200...299).contains(response.statusCode) else {
+                completion(.failure(NSError(domain: "", code: response.statusCode, userInfo: [NSLocalizedDescriptionKey: "Invalid Response Code"])))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No Data"])))
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let jsonData = try decoder.decode(RusMuseum.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(jsonData))
+                }
+            } catch let error {
+                completion(.failure(error))
+            }
+        }
+        dataTask?.resume()
+    }
+}
+//class ApiReq_1TB {
     
     // static let shared = ApiReq_1TB()
     
@@ -32,58 +82,58 @@ class ApiReq_1TB {
     //    }
     //
     
-    private var dataTask: URLSessionDataTask?
-    
-    func getPopularMoviesDatas(completion: @escaping (Results) -> Void) {
-        
-        let popularMoviesURL = "https://api.themoviedb.org/3/movie/popular?api_key=4e0be2c22f7268edffde97481d49064a&language=en-US&page=1"
-        
-        guard let url = URL(string: popularMoviesURL) else {return}
-        
-        // Create URL Session - work on the background
-        dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            
-            // Handle Error
-            if let error = error {
-               // completion(.failure(error))
-                print("DataTask error: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse else {
-                // Handle Empty Response
-                print("Empty Response")
-                return
-            }
-            print("Response status code: \(response.statusCode)")
-            
-            guard let data = data else {
-                // Handle Empty Data
-                print("Empty Data")
-                return
-            }
-            
-            do {
-                // Parse the data
-                let decoder = JSONDecoder()
-                let jsonData = try decoder.decode(RusMuseum.self, from: data)
-                print(jsonData)
-                // Back to the main thread
-                DispatchQueue.main.async {
-                   // completion(.success(jsonData))
-                }
-            } catch let error {
-               // completion(.failure(error))
-            }
-            
-        }
-        dataTask?.resume()
-    }
-}
+//    private var dataTask: URLSessionDataTask?
+//
+//    func getPopularMoviesDatas(completion: @escaping (Results) -> Void) {
+//
+//        let popularMoviesURL = "https://api.themoviedb.org/3/movie/popular?api_key=4e0be2c22f7268edffde97481d49064a&language=en-US&page=1"
+//
+//        guard let url = URL(string: popularMoviesURL) else {return}
+//
+//        // Create URL Session - work on the background
+//        dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
+//
+//            // Handle Error
+//            if let error = error {
+//               // completion(.failure(error))
+//                print("DataTask error: \(error.localizedDescription)")
+//                return
+//            }
+//
+//            guard let response = response as? HTTPURLResponse else {
+//                // Handle Empty Response
+//                print("Empty Response")
+//                return
+//            }
+//            print("Response status code: \(response.statusCode)")
+//
+//            guard let data = data else {
+//                // Handle Empty Data
+//                print("Empty Data")
+//                return
+//            }
+//
+//            do {
+//                // Parse the data
+//                let decoder = JSONDecoder()
+//                let jsonData = try decoder.decode(RusMuseum.self, from: data)
+//                print(jsonData)
+//                // Back to the main thread
+//                DispatchQueue.main.async {
+//                    completion(.success(jsonData))
+//                }
+//            } catch let error {
+//                completion(.failure(error))
+//            }
+//
+//        }
+//        dataTask?.resume()
+//    }
+//}
   //  func downloadMuseum() {
         
 //        guard let url =  URL(string:"https://www.rijksmuseum.nl/api/nl/collection?key=22Q0fdS2&involvedMaker=Rembrandt+van+Rijn") else { return }
-//        
+//
 //        let session = URLSession.shared
 //        session.dataTask(with: url) { data, response, error in
 //            if let response = response {
