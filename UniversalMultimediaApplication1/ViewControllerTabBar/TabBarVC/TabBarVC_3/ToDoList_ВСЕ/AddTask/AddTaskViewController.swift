@@ -35,7 +35,7 @@ class AddTaskViewController: UIViewController, AddTaskViewProtocol {
         switchControl.onTintColor = .systemGreen
         switchControl.clipsToBounds = true
         switchControl.layer.cornerRadius = 15
-        switchControl.addTarget(AddTaskViewController.self, action: #selector(switchChanged(_:)), for: .valueChanged)
+        switchControl.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)
         return switchControl
     }()
     
