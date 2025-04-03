@@ -23,9 +23,10 @@ class TaskListView: UIViewController, TaskListViewProtocol {
     
     private let taskCountLabel: UILabel = { // ✅ Добавляем label для количества задач
         let label = UILabel()
-        label.font = .systemFont(ofSize: 20, weight: .medium)
+        label.font = .systemFont(ofSize: 25, weight: .bold)
         label.textAlignment = .center
         label.textColor = .systemBlue
+        //label.backgroundColor = #colorLiteral(red: 0.2066813409, green: 0.7795598507, blue: 0.3491449356, alpha: 1)
         label.text = "Задач: 0"
         return label
     }()
@@ -70,8 +71,6 @@ class TaskListView: UIViewController, TaskListViewProtocol {
             
             // Enable back button (this will use the system back button)
             navigationItem.leftItemsSupplementBackButton = true
-//            navigationController?.navigationBar.backIndicatorImage = UIImage(systemName: "chevron.backward")
-//            navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(systemName: "chevron.backward")
         }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -118,7 +117,7 @@ class TaskListView: UIViewController, TaskListViewProtocol {
     func setupSearchController() {
         searchController.editButtonItem.style = .done
         searchController.searchBar.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
-        searchController.searchBar.tintColor = #colorLiteral(red: 0.1267546319, green: 0.9686274529, blue: 0.06339141484, alpha: 1)
+        searchController.searchBar.tintColor = #colorLiteral(red: 0.2066813409, green: 0.7795598507, blue: 0.3491449356, alpha: 1)
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -133,7 +132,7 @@ class TaskListView: UIViewController, TaskListViewProtocol {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditingMode)) // ✅ Добавляем кнопку Edit
         
-        tableView.frame = CGRect(x: 0, y: 70, width: view.frame.size.width, height: view.frame.size.height - 180)
+        tableView.frame = CGRect(x: 0, y: 10, width: view.frame.size.width, height: view.frame.size.height)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -145,7 +144,8 @@ class TaskListView: UIViewController, TaskListViewProtocol {
     func setupAddButton() {
         addButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
         addButton.imageView?.contentMode = .scaleAspectFill
-        addButton.layer.cornerRadius = 25
+        addButton.layer.cornerRadius = 10
+        addButton.backgroundColor = #colorLiteral(red: 0.2066813409, green: 0.7795598507, blue: 0.3491449356, alpha: 1)
         addButton.clipsToBounds = true
         addButton.addTarget(self, action: #selector(addTaskTapped), for: .touchUpInside)
         
@@ -154,10 +154,10 @@ class TaskListView: UIViewController, TaskListViewProtocol {
         view.addSubview(addButton)
         
         NSLayoutConstraint.activate([
-            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-            addButton.widthAnchor.constraint(equalToConstant: 60),
-            addButton.heightAnchor.constraint(equalToConstant: 60)
+            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -100),
+            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15),
+            addButton.widthAnchor.constraint(equalToConstant: 50),
+            addButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
@@ -166,10 +166,11 @@ class TaskListView: UIViewController, TaskListViewProtocol {
         view.addSubview(taskCountLabel)
         
         NSLayoutConstraint.activate([
-            taskCountLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            taskCountLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            taskCountLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
-            taskCountLabel.heightAnchor.constraint(equalToConstant: 20)
+            taskCountLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 70),
+            taskCountLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15),
+            taskCountLabel.heightAnchor.constraint(equalToConstant: 50),
+            taskCountLabel.widthAnchor.constraint(equalToConstant: 150),
+            
         ])
     }
     

@@ -32,7 +32,25 @@ class AddTaskViewController: UIViewController, AddTaskViewProtocol {
     
     private let completedSwitch: UISwitch = {
         let switchControl = UISwitch()
+        switchControl.onTintColor = .systemGreen
+        switchControl.clipsToBounds = true
+        switchControl.layer.cornerRadius = 15
+        switchControl.addTarget(AddTaskViewController.self, action: #selector(switchChanged(_:)), for: .valueChanged)
         return switchControl
+    }()
+    
+    @objc func switchChanged(_ sender: UISwitch) {
+        sender.backgroundColor = sender.isOn ? .systemGreen : .lightGray
+    }
+    
+    private let titleSwitch: UILabel = {
+        let title = UILabel()
+        title.textAlignment = .left
+        title.numberOfLines = 0
+        title.textColor = .systemOrange
+        title.font = .systemFont(ofSize: 14)
+        title.text = "Переключи Switch, если нужно отмечать выполекнной задачу."
+        return title
     }()
     
     override func viewDidLoad() {
@@ -45,25 +63,37 @@ class AddTaskViewController: UIViewController, AddTaskViewProtocol {
     }
     
     func setupUI() {
-        view.backgroundColor = #colorLiteral(red: 0.6240465045, green: 0.09995300323, blue: 0.4080937505, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0.6369494796, green: 0.09633842856, blue: 0.4035278857, alpha: 1)
         title = editingTask == nil ? "Новая задача" : "Редактирование"
         navigationItem.title = "Добавить задачу"
         
         let stackView = UIStackView(arrangedSubviews: [
             userIdTextField,
             titleTextField,
-            completedSwitch
+            //completedSwitch
         ])
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        completedSwitch.translatesAutoresizingMaskIntoConstraints = false
+        titleSwitch.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(stackView)
+        view.addSubview(completedSwitch)
+        view.addSubview(titleSwitch)
         
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            completedSwitch.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 5),
+            completedSwitch.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            
+            titleSwitch.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 5),
+            titleSwitch.leadingAnchor.constraint(equalTo: completedSwitch.trailingAnchor, constant: 10),
+            titleSwitch.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            //completedSwitch.widthAnchor.constraint(equalToConstant: 60)
         ])
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelTapped)
