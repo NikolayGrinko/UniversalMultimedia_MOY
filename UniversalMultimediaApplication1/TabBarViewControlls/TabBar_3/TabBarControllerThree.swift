@@ -39,9 +39,9 @@ class TabBarControllerThree: UITabBarController {
                 image: UIImage(systemName: "movieclapper")
             ),
             generateVC(
-                viewController: ToDoList_CoreDataVC(),
-                title: "ToDoList",
-                image: UIImage(systemName: "pencil.and.list.clipboard")
+                viewController: SettingsVC_Three(),
+                title: "Settings",
+                image: UIImage(systemName: "slider.horizontal.3")
             )
         ]
     }

@@ -32,8 +32,8 @@ class TabBarControllerFour: UITabBarController {
     private func generateTabBar() {
         viewControllers = [
             generateVC(
-                viewController: Wildberries(),
-                title: "Wildberries",
+                viewController: HomeVC_Four(),
+                title: "Home",
                 image: UIImage(systemName: "house.fill")
             ),
             generateVC(

@@ -34,6 +34,7 @@ struct Image: Decodable {
     let url: String?
 }
 
+
 // MARK: - Links
 //struct Links: Codable {
 //    let linksSelf, web: String
@@ -75,16 +76,14 @@ class MuseumModel {
         // weak self - prevent retain cycles
         apiService.getPopularMoviesDatas { [weak self] result in
             
-            switch result {
-            case .success(let listOf):
-                // CHANGE: Access artObjects instead of artObject
-                self?.popularMuseum = listOf.artObjects
-                completion(nil)
-            case .failure(let error):
-                // Something is wrong with the JSON file or the model
-                print("Error processing json data: \(error)")
-                completion(error.localizedDescription)
-            }
+//            switch result {
+//            case .success(let listOf):
+//                self?.popularMuseum = listOf.artObject
+//                completion(nil)
+//            case .failure(let error):
+//                // Something is wrong with the JSON file or the model
+//                print("Error processing json data: \(error)")
+//            }
         }
     }
     
@@ -98,4 +97,5 @@ class MuseumModel {
     func cellForRowAt (indexPath: IndexPath) -> ArtObject {
         return popularMuseum[indexPath.row]
     }
+    
 }

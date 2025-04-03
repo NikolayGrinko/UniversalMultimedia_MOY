@@ -2,21 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.968246070699-njdqhlmlh37kgouqjn392vdbd823pjhd</string>
-			</array>
-		</dict>
-	</array>
-	<key>GIDClientID</key>
-	<string>968246070699-njdqhlmlh37kgouqjn392vdbd823pjhd.apps.googleusercontent.com</string>
-	<key>CFBundleIdentifier</key>
-	<string>com.nikolajgrinko.UniversalMultimediaApplication1</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -34,10 +19,12 @@
 			</array>
 		</dict>
 	</dict>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>googlechromes</string>
-		<string>googlechrome</string>
-	</array>
+    
+    <key>NSAppTransportSecurity</key>
+    <dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+    </dict>
+    
 </dict>
 </plist>
