@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Product: Codable, Hashable {
+struct Produc: Codable, Hashable {
     let id: Int
     let title: String
     let price: Double
@@ -15,6 +15,7 @@ struct Product: Codable, Hashable {
     let description: String
     let images: [String]
     let category: String
+    
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -61,7 +62,7 @@ struct Product: Codable, Hashable {
         hasher.combine(id)
     }
     
-    static func == (lhs: Product, rhs: Product) -> Bool {
+    static func == (lhs: Produc, rhs: Produc) -> Bool {
         return lhs.id == rhs.id
     }
     

@@ -78,9 +78,9 @@ class DetailViewController: UIViewController {
         return label
     }()
     
-    private let product: Product
+    private let product: Produc
     
-    init(product: Product) {
+    init(product: Produc) {
         self.product = product
         super.init(nibName: nil, bundle: nil)
     }

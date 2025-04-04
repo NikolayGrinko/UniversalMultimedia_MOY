@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 // MARK: - Protocol
 protocol ProductCellDelegate: AnyObject {
@@ -86,10 +87,15 @@ class ProductCell: UICollectionViewCell {
         return button
     }()
     
-    private var currentProduct: Product?
+    private var currentProduct: Produc?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        isSkeletonable = true
+        contentView.isSkeletonable = true
+        
+        // CHANGE: Настраиваем базовые параметры скелетона
+        contentView.skeletonCornerRadius = 8
         setupUI()
     }
     
@@ -106,6 +112,15 @@ class ProductCell: UICollectionViewCell {
         contentView.layer.shadowOpacity = 0.1
         
         isUserInteractionEnabled = true
+        
+        // CHANGE: Настраиваем скелетон для всех элементов
+        [imageCollectionView, titleLabel, priceLabel, categoty, buyButton].forEach {
+            $0.isSkeletonable = true
+            if let view = $0 as? UILabel {
+                view.linesCornerRadius = 8
+                view.skeletonTextLineHeight = .fixed(20)
+            }
+        }
         
         contentView.addSubview(imageCollectionView)
         contentView.addSubview(pageControl)
@@ -160,7 +175,7 @@ class ProductCell: UICollectionViewCell {
         buyButton.setTitle("Купить", for: .normal)
     }
     
-    func configure(with product: Product) {
+    func configure(with product: Produc) {
         currentProduct = product
         titleLabel.text = product.title
         priceLabel.text = String(format: "%.2f $", product.price)

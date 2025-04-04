@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import SkeletonView
 
 class Wildberries_1: UIViewController {
     
-    private var produc: [Product] = [] {
+    private var produc: [Produc] = [] {
         didSet {
             print("Products array updated. Count: \(produc.count)")
         }
@@ -31,6 +32,7 @@ class Wildberries_1: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .systemBackground
         cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.isSkeletonable = true
         return cv
     }()
     
@@ -43,16 +45,31 @@ class Wildberries_1: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Setup navigation first
         setupNavigationBar()
+        setupUI()
         setupCartButton()
         
-        // Then setup other UI elements
-        setupUI()
-        fetchProducts()
+        let gradient = SkeletonGradient(
+            baseColor: UIColor(red: 0.62, green: 0.1, blue: 0.41, alpha: 1),
+            secondaryColor: UIColor(red: 0.06, green: 0, blue: 0.19, alpha: 1)
+        )
         
-        // Add observer for cart updates
+        collectionView.showAnimatedGradientSkeleton(
+            usingGradient: gradient,
+            animation: SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight),
+            transition: .crossDissolve(0.75)
+            
+        )
+        
+        view.showAnimatedGradientSkeleton(
+            usingGradient: gradient,
+            animation: SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight),
+            transition: .crossDissolve(0.75)
+            )
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+            self.fetchProduct()
+        }
+        
         NotificationCenter.default.addObserver(self,
                                              selector: #selector(handleCartUpdate),
                                              name: .cartDidUpdate,
@@ -60,53 +77,53 @@ class Wildberries_1: UIViewController {
     }
     
     private func setupNavigationBar() {
-            // Configure navigation bar appearance
-            if #available(iOS 13.0, *) {
-                let appearance = UINavigationBarAppearance()
-                appearance.configureWithOpaqueBackground()
-                appearance.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 1)
-                appearance.shadowColor = .clear
-                
-                appearance.titleTextAttributes = [
-                    .foregroundColor: UIColor.white,
-                    .font: UIFont.systemFont(ofSize: 18, weight: .semibold)
-                ]
-                
-                navigationController?.navigationBar.standardAppearance = appearance
-                navigationController?.navigationBar.scrollEdgeAppearance = appearance
-                navigationController?.navigationBar.compactAppearance = appearance
-            }
+        navigationController?.navigationBar.prefersLargeTitles = false
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.white,
+            .font: UIFont.systemFont(ofSize: 18, weight: .semibold)
+        ]
+        
+        navigationController?.navigationBar.titleTextAttributes = attributes
+        title = "Товары"
+        
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = #colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1)
+            appearance.titleTextAttributes = attributes
+            appearance.shadowColor = .clear
+            
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+            navigationController?.navigationBar.compactAppearance = appearance
             
             navigationController?.navigationBar.tintColor = .white
-            navigationController?.navigationBar.isTranslucent = false
-            
-            // Set the title
-            title = "Каталог"
-            
-            // Enable back button (this will use the system back button)
-            navigationItem.leftItemsSupplementBackButton = true
-            navigationController?.navigationBar.backIndicatorImage = UIImage(systemName: "chevron.backward")
-            navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(systemName: "chevron.backward")
+        } else {
+            navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.6240465045, green: 0.09995300323, blue: 0.4080937505, alpha: 1)
+            navigationController?.navigationBar.tintColor = .white
+            navigationController?.navigationBar.titleTextAttributes = attributes
+            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            navigationController?.navigationBar.shadowImage = UIImage()
         }
-
+        
+        navigationController?.navigationBar.isTranslucent = false
+    }
     
     private func setupUI() {
         view.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 1)
-        
-        // Настройка CollectionView
-        collectionView.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 1)
-        collectionView.contentInsetAdjustmentBehavior = .never // Предотвращаем автоматическую корректировку отступов
-        
         view.addSubview(collectionView)
         view.addSubview(activityIndicator)
         
+        collectionView.backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 1)
         activityIndicator.color = .white
         
-        collectionView.delegate = self
-        collectionView.dataSource = self
         collectionView.register(ProductCell.self, forCellWithReuseIdentifier: ProductCell.reuseId)
+        collectionView.isSkeletonable = true
+        view.isSkeletonable = true
+        collectionView.dataSource = self
+        collectionView.delegate = self
         
-        // ACTIVITY top
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         refreshControl.tintColor = .white
@@ -117,7 +134,7 @@ class Wildberries_1: UIViewController {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -128,11 +145,6 @@ class Wildberries_1: UIViewController {
     }
     
     private func setupCartButton() {
-        cartButton.setImage(UIImage(systemName: "cart.fill"), for: .normal)
-        cartButton.tintColor = .white
-        cartButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-        cartButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        
         let cartBarButton = UIBarButtonItem(customView: cartButton)
         navigationItem.rightBarButtonItem = cartBarButton
         cartButton.addTarget(self, action: #selector(cartButtonTapped), for: .touchUpInside)
@@ -150,7 +162,6 @@ class Wildberries_1: UIViewController {
     
     @objc private func handleCartUpdate() {
         updateCartBadge()
-        // Обновляем все видимые ячейки
         collectionView.visibleCells.forEach { cell in
             if let productCell = cell as? ProductCell {
                 productCell.updateBuyButton()
@@ -165,20 +176,27 @@ class Wildberries_1: UIViewController {
     
     @objc private func refreshData() {
         print("Refreshing data...")
-        fetchProducts()
+        fetchProduct()
     }
     
-    private func fetchProducts() {
+    private func fetchProduct() {
         showLoading(true)
         
-        ProductAPIService.shared.fetchProduc { [weak self] produc in
+        ProductAPIService.shared.fetchProducts(page: 0) { [weak self] result in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
                 self.showLoading(false)
                 
-                if let products = produc {
-                    self.produc = Array(products.shuffled().prefix(Int.random(in: 5...30)))
+                switch result {
+                case .success(let response):
+                    self.produc = response.products // Using products directly from response
+                    
+                    self.view.stopSkeletonAnimation()
+                    self.view.hideSkeleton(reloadDataAfter: true, transition: .crossDissolve(0.9))
+                    
+                    self.collectionView.stopSkeletonAnimation()
+                    self.collectionView.hideSkeleton(reloadDataAfter: true, transition: .crossDissolve(0.9))
                     
                     UIView.transition(with: self.collectionView,
                                     duration: 0.3,
@@ -192,7 +210,9 @@ class Wildberries_1: UIViewController {
                     } else {
                         self.collectionView.backgroundView = nil
                     }
-                } else {
+                    
+                case .failure(let error):
+                    print("Error fetching products: \(error)")
                     self.showError()
                 }
             }
@@ -217,7 +237,7 @@ class Wildberries_1: UIViewController {
         )
         
         alert.addAction(UIAlertAction(title: "Повторить", style: .default) { [weak self] _ in
-            self?.fetchProducts()
+            self?.fetchProduct()
         })
         
         alert.addAction(UIAlertAction(title: "OK", style: .cancel))
@@ -235,6 +255,16 @@ class Wildberries_1: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+}
+
+extension Wildberries_1: SkeletonCollectionViewDataSource {
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10 // Количество ячеек-скелетонов
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return ProductCell.reuseId
     }
 }
 
@@ -268,7 +298,3 @@ extension Wildberries_1: ProductCellDelegate {
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }
-
-
-
-

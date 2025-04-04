@@ -248,7 +248,7 @@ extension CartViewController: UITableViewDataSourcePrefetching {
 
 // MARK: - CartCellDelegate
 extension CartViewController: CartCellDelegate {
-    func cartCell(_ cell: CartCell, didUpdateQuantity quantity: Int, for product: Product) {
+    func cartCell(_ cell: CartCell, didUpdateQuantity quantity: Int, for product: Produc) {
         let currentQuantity = CartManager.shared.getQuantity(for: product)
         
         if quantity < currentQuantity {

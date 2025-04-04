@@ -9,7 +9,7 @@ import Foundation
 class CartManager {
     static let shared = CartManager()
     
-    private(set) var cartItems: [Product: Int] = [:] // [Product: Quantity]
+    private(set) var cartItems: [Produc: Int] = [:] // [Product: Quantity]
     
     var totalItems: Int {
         return cartItems.values.reduce(0, +)
@@ -19,12 +19,12 @@ class CartManager {
         return cartItems.reduce(0) { $0 + ($1.key.price * Double($1.value)) }
     }
     
-    func addToCart(_ product: Product) {
+    func addToCart(_ product: Produc) {
         cartItems[product, default: 0] += 1
         NotificationCenter.default.post(name: .cartDidUpdate, object: nil)
     }
     
-    func removeFromCart(_ product: Product) {
+    func removeFromCart(_ product: Produc) {
         guard let quantity = cartItems[product], quantity > 0 else { return }
         if quantity == 1 {
             cartItems.removeValue(forKey: product)
@@ -34,7 +34,7 @@ class CartManager {
         NotificationCenter.default.post(name: .cartDidUpdate, object: nil)
     }
     
-    func getQuantity(for product: Product) -> Int {
+    func getQuantity(for product: Produc) -> Int {
         return cartItems[product] ?? 0
     }
     

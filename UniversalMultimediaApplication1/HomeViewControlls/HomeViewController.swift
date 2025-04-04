@@ -53,7 +53,7 @@ class HomeViewController: UIViewController {
     
     private lazy var signOutButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Выйти", for: .normal)
+        button.setTitle("SignOut", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemRed
         button.layer.cornerRadius = 10

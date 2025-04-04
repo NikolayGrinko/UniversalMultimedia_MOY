@@ -13,7 +13,7 @@ class CartCell: UITableViewCell {
     private var imageLoadTask: URLSessionDataTask?
     
     weak var delegate: CartCellDelegate?
-    private var product: Product?
+    private var product: Produc?
     
     private let productImageView: UIImageView = {
         let iv = UIImageView()
@@ -118,7 +118,7 @@ class CartCell: UITableViewCell {
         productImageView.image = nil
     }
     
-    func configure(with product: Product, quantity: Int) {
+    func configure(with product: Produc, quantity: Int) {
         self.product = product
         
         titleLabel.text = product.title
@@ -128,7 +128,7 @@ class CartCell: UITableViewCell {
         loadImage(for: product)
     }
     
-    private func loadImage(for product: Product) {
+    private func loadImage(for product: Produc) {
         imageLoadTask?.cancel()
         
         if let cachedImage = CartCell.imageCache.object(forKey: product.imageUrl as NSString) {
@@ -173,5 +173,5 @@ class CartCell: UITableViewCell {
 }
 
 protocol CartCellDelegate: AnyObject {
-    func cartCell(_ cell: CartCell, didUpdateQuantity quantity: Int, for product: Product)
+    func cartCell(_ cell: CartCell, didUpdateQuantity quantity: Int, for product: Produc)
 }

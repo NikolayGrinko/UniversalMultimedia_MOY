@@ -8,23 +8,20 @@
 import Foundation
 import UIKit
 
-struct DummyJSONWrapper: Decodable {
-    let products: [Product]
-    
-    enum CodingKeys: String, CodingKey {
-        case products
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        products = try container.decode([Product].self, forKey: .products)
-    }
+struct DummyJSONResponse: Decodable {
+    let products: [Produc]
+    let total: Int
+    let skip: Int
+    let limit: Int
 }
 
 class ProductAPIService {
     static let shared = ProductAPIService()
     private let session: URLSession
     private let imageCache = NSCache<NSString, UIImage>()
+    
+    private let baseURL = "https://dummyjson.com/products"
+    private let itemsPerPage = 20
     
     init() {
         let config = URLSessionConfiguration.default
@@ -41,15 +38,47 @@ class ProductAPIService {
         imageCache.totalCostLimit = 50_000_000
     }
     
-    func fetchProduc(completion: @escaping ([Product]?) -> Void) {
-        let urls = [
-            "https://dummyjson.com/products",
-            "https://fakestoreapi.com/products",
-            "https://api.escuelajs.co/api/v1/products"
-        ]
+    func fetchProducts(page: Int, completion: @escaping (Result<(products: [Produc], hasMore: Bool), Error>) -> Void) {
+        let skip = page * itemsPerPage
+        let urlString = "\(baseURL)?limit=\(itemsPerPage)&skip=\(skip)"
         
-        print("Fetching products from network...")
-        tryNextURL(urls: urls, currentIndex: 0, completion: completion)
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 30
+        request.cachePolicy = .returnCacheDataElseLoad
+        
+        session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+                return
+            }
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
+                }
+                return
+            }
+            
+            do {
+                let response = try JSONDecoder().decode(DummyJSONResponse.self, from: data)
+                let hasMore = (skip + response.products.count) < response.total
+                
+                DispatchQueue.main.async {
+                    completion(.success((products: response.products, hasMore: hasMore)))
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+            }
+        }.resume()
     }
     
     func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
@@ -75,58 +104,6 @@ class ProductAPIService {
             
             DispatchQueue.main.async {
                 completion(image)
-            }
-        }.resume()
-    }
-    
-    private func tryNextURL(urls: [String], currentIndex: Int, completion: @escaping ([Product]?) -> Void) {
-        guard currentIndex < urls.count else {
-            print("All URLs failed")
-            completion(nil)
-            return
-        }
-        
-        let urlString = urls[currentIndex]
-        print("Trying URL: \(urlString)")
-        
-        guard let url = URL(string: urlString) else {
-            tryNextURL(urls: urls, currentIndex: currentIndex + 1, completion: completion)
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.timeoutInterval = 30
-        request.cachePolicy = .returnCacheDataElseLoad
-        
-        session.dataTask(with: request) { [weak self] data, response, error in
-            if let error = error {
-                print("Error with \(urlString): \(error.localizedDescription)")
-                self?.tryNextURL(urls: urls, currentIndex: currentIndex + 1, completion: completion)
-                return
-            }
-            
-            guard let data = data else {
-                self?.tryNextURL(urls: urls, currentIndex: currentIndex + 1, completion: completion)
-                return
-            }
-            
-            do {
-                let products: [Product]
-                if urlString.contains("dummyjson.com") {
-                    let wrapper = try JSONDecoder().decode(DummyJSONWrapper.self, from: data)
-                    products = wrapper.products
-                } else {
-                    products = try JSONDecoder().decode([Product].self, from: data)
-                }
-                
-                print("Successfully received \(products.count) products")
-                
-                DispatchQueue.main.async {
-                    completion(products)
-                }
-            } catch {
-                print("Decoding error from \(urlString): \(error)")
-                self?.tryNextURL(urls: urls, currentIndex: currentIndex + 1, completion: completion)
             }
         }.resume()
     }

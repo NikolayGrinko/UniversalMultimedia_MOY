@@ -347,9 +347,8 @@ class LoginRegistrationVC: UIViewController, UITextFieldDelegate {
             actionButton.heightAnchor.constraint(equalToConstant: 50),
             
             signInButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            signInButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 600),
-            signInButton.widthAnchor.constraint(equalToConstant: 280),
-            signInButton.heightAnchor.constraint(equalToConstant: 50)
+            signInButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20),
+            signInButton.widthAnchor.constraint(equalToConstant: 340)
         ])
         
         forgotPasswordButton.isHidden = !isLoginMode

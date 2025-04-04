@@ -25,7 +25,7 @@ class Wildberries: UIViewController {
         text.font = .systemFont(ofSize: 24, weight: .bold)
         text.backgroundColor = .clear
         text.textAlignment = .center
-        text.text = "Вы попали на контроллер, с которого перейдете на главный экран wildberries с ячейками в которых есть фото, title, descriptions. При нажатии открывается полное описание продукта. Есть корзина, в которой отображается добавленный товар и сумма, также количество товаров в корзине."
+        text.text = "Вы попали на контроллер, с которого перейдете на главный экран wildberries с ячейками в которых есть фото, title, descriptions. При нажатии открывается полное описание продукта. Есть корзина, в которой отображается добавленный товар и сумма, также количество товаров в корзине. Плюс реализовал здесь SkeletonView"
         text.textColor = .systemOrange
         text.translatesAutoresizingMaskIntoConstraints = false
         return text
